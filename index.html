@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="cs-cz">
+<head>
+    <meta charset="utf-8">
+    <title>Google search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>Google Search</h1>
+    <form id="searchBar">
+        <input type="text" id="keyword" placeholder="Hledaný výraz" required>
+        <button type="submit">Hledat</button>
+    </form>
+    <pre id="results"></pre>
+
+    <script>
+        document.getElementById('searchBar').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const keyword = document.getElementById('keyword').value;
+            fetch(`/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('results').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('results').textContent = `Error: ${error}`;
+                });
+        });
+    </script>
+</body>
+</html>
